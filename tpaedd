@@ -1,1 +1,1261 @@
-hjklhj
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cstdlib>
+#include <windows.h>
+#include<stdlib.h>
+#include <ctime>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+const int tam=1000;
+
+int PuntajeB(int totalVocales,int b);
+string palabraMasLarga(string palabras[]);
+int contarVocales(string palabras[]);
+char letraMasRepetida(string palabras[]);
+void mostrardisplay(string display,int aum);
+void Inicio();
+void logo();
+void separador1();
+void gotoxy(int x,int y);	
+void MenuJuegos();
+void Menu();
+void Menuabecedario();
+void Ahorcado();
+void Memorias();
+void PalabraCifrada();
+void NumeroEnIdiomas();
+string cifrarPalabra(const string & palabra, int offset);
+void temporizador(int);
+void NombreEnIdioma(int n,int idioma);
+string Segmentos(int n);
+string palabrandom();
+	
+int main(int argc, char *argv[]) {
+	separador1();
+	clock_t t;
+	t=clock();
+	system("color 09");
+	system("mode con: cols=100 lines=30");
+	logo();
+	//Inicio();
+	Menu();
+	temporizador((clock()-t));
+	
+	return 0;
+}
+string palabrandom(){
+	
+	string PalabrasTxs[tam]={"adicion"
+		,"angulo"
+			,"aproximacion"
+			,"area"
+			,"aritmetica"
+			,"arriba"
+			,"axioma"
+			,"base"
+			,"binomio"
+			,"bisectriz"
+			,"calculo"
+			,"centro"
+			,"circulo"
+			,"coeficiente"
+			,"combinatoria"
+			,"congruencia"
+			,"constante"
+			,"coseno"
+			,"cuadrado"
+			,"cubico"
+			,"curva"
+			,"decimal"
+			,"denominador"
+			,"derivada"
+			,"diagonal"
+			,"diametro"
+			,"diferencia"
+			,"diferencial"
+			,"distancia"
+			,"distribucion"
+			,"dividendo"
+			,"division"
+			,"divisor"
+			,"ecuacion"
+			,"eje"
+			,"elemento"
+			,"entero"
+			,"equilatero"
+			,"esfera"
+			,"espacio"
+			,"exponente"
+			,"factor"
+			,"factorial"
+			,"factorizacion"
+			,"figura"
+			,"formula"
+			,"fraccion"
+			,"funcion"
+			,"geometria"
+			,"grado"
+			,"hipotenusa"
+			,"hipotesis"
+			,"horizontal"
+			,"igualdad"
+			,"imaginario"
+			,"inecuacion"
+			,"infinito"
+			,"integral"
+			,"interseccion"
+			,"inversa"
+			,"isosceles"
+			,"lado"
+			,"limite"
+			,"linea"
+			,"logaritmo"
+			,"matriz"
+			,"mayor"
+			,"mediana"
+			,"menor"
+			,"minimo"
+			,"multiplo"
+			,"numero"
+			,"par"
+			,"paralela"
+			,"perimetro"
+			,"perpendicular"
+			,"pi"
+			,"poligono"
+			,"potencia"
+			,"producto"
+			,"productoria"
+			,"proporcion"
+			,"raiz"
+			,"rectangulo"
+			,"segmento"
+			,"seno"
+			,"serie"
+			,"simetria"
+			,"suma"
+			,"sumatoria"
+			,"superficie"
+			,"tabla"
+			,"tangente"
+			,"teorema"
+			,"termino"
+			,"triangulo"
+			,"trigonometria"
+			,"unidad"
+			,"valor"
+			,"variable"
+			,"vertice"
+			,"volumen"};
+	
+	srand(time(NULL));
+	
+	return PalabrasTxs[rand()%101];
+}
+void temporizador(int t){
+	system ("cls");
+	separador1();
+	gotoxy(38,1);
+	cout<<"Hasta luego!";
+	gotoxy(1,3);
+	t=((int)t)/CLOCKS_PER_SEC;
+	cout<<"Duracion de la sesion: "<<t/60<<" minutos y "<<t%60<<" segundos";
+	
+}
+void separador1(){
+	for(int i=0; i<100; i++){ //hace las lineas
+		gotoxy(i,0); 
+		cout<<"-";
+	}  
+	for(int i=1; i<30; i++){  //hace las lineas
+		gotoxy(0,i); 
+		cout<<"|";
+	}
+	for(int i=0; i<100; i++){ //hace las lineas
+		gotoxy(i,29); 
+		cout<<"-";
+	}
+	for(int i=28; i>=1; i--){  //hace las lineas
+		gotoxy(99,i); 
+		cout<<"|";
+	}
+}
+	void gotoxy(int x,int y){
+		HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+		COORD dwPos;
+		dwPos.X = x;
+		dwPos.Y = y;
+		SetConsoleCursorPosition(hcon,dwPos);
+	}
+void Inicio(){
+	separador1();
+	int intentos = 0;
+	string usuario, contrasenia;
+	bool bandera=false,bandera1=false;;
+	while (intentos < 3 and bandera==false){
+		int legajo;
+		while(bandera1==false){
+			separador1();
+			gotoxy(1,1);
+			cout<<"Inicie sesion ingresando Numero de legajo: ";
+			gotoxy(1,2);
+			cin>>usuario;
+			
+			if (usuario.size() != 5) {
+				cout << "El número de legajo debe tener 5 dígitos." << endl;
+				intentos++;
+				system("cls");
+				
+			}else{
+				
+				legajo=((usuario[0]-'0')*10000)+((usuario[1]-'0')*1000)+((usuario[2]-'0')*100)+((usuario[3]-'0')*10)+((usuario[4]-'0'));
+				
+				if (legajo < 10000 || legajo > 89999) {
+					cout << "El número de legajo debe estar en el rango [10000..89999]." << endl;
+					intentos++;
+					system("cls");
+				}else bandera1=true;
+			}
+			
+		}
+		
+		
+		int primerDigito = legajo / 10000;
+		int ultimoDigito = legajo % 10;
+		int suma = (primerDigito + ultimoDigito) % 10;
+		
+		string legajoInvertido = to_string(((ultimoDigito)*1000) + (((legajo/10)%10)*100)+ (((legajo/100)%10)*10) + (((legajo/1000)%10)*1));
+		
+		string contraseniaGenerada = legajoInvertido + to_string(suma);
+		
+		
+		
+		while(bandera==false and intentos<3){
+			separador1();
+			gotoxy(1,3);
+			cout<<"Ingrese su contrasenia: ";
+			gotoxy(1,4);
+			cin>>contrasenia;
+			
+			if(contrasenia==contraseniaGenerada){
+				bandera=true;
+				system("cls");
+				Menu();
+			}
+			else{
+				intentos++;
+				system("cls");
+			}
+		}
+		if(intentos==3){
+			system("cls");
+			separador1();
+			gotoxy(1,1);
+			cout<<"contrasenia incorrecta, ha agotado todos sus intentos";
+			gotoxy(1,2);
+			system("pause");
+		}
+	}
+	
+	
+}
+void logo() {
+	int y = 0;
+	int x = 37;
+	separador1();
+	gotoxy(x, ++y);
+	cout << "*****       *****       *****\n";
+	gotoxy(x, ++y);
+	
+	cout << " *****      *****      *****\n";
+	gotoxy(x, ++y);
+	
+	cout << "  *****     *****     *****\n";
+	gotoxy(x, ++y);
+	cout << "   *****    *****    *****\n";
+	gotoxy(x, ++y);
+	cout << "    *********************\n";
+	gotoxy(x, ++y);
+	cout << "     *******************\n";
+	gotoxy(x, ++y);
+	cout << "      *****************\n";
+	gotoxy(x, ++y);
+	cout << " ***************************\n";
+	gotoxy(x, ++y);
+	cout << " ***************************\n";
+	gotoxy(x, ++y);
+	cout << " ***************************\n";
+	gotoxy(x, ++y);
+	cout << " ***************************\n";
+	gotoxy(x, ++y);
+	cout << "      *****************\n";
+	gotoxy(x, ++y);
+	cout << "     *******************\n";
+	gotoxy(x, ++y);
+	cout << "    *********************\n";
+	gotoxy(x, ++y);
+	cout << "   *****    *****    *****\n";
+	gotoxy(x, ++y);
+	cout << "  *****     *****     *****\n";
+	gotoxy(x, ++y);
+	cout << " *****      *****      *****\n";
+	gotoxy(x, ++y);
+	cout << "*****       *****       *****\n";
+	gotoxy(x, ++y);
+	cout << "\n";
+	gotoxy(x, ++y);
+	cout << " **  **    ******    **   **\n";
+	gotoxy(x, ++y);
+	cout << " **  **    ******    ***  **\n";
+	gotoxy(x, ++y);
+	cout << " **  **      **      *******\n";
+	gotoxy(x, ++y);
+	cout << " ******      **      **  ***\n";
+	gotoxy(x, ++y);
+	cout << " ******      **      **   **\n";
+	gotoxy(x, ++y);
+	cout << "\n";
+	gotoxy(36, ++y);
+	cout << "UNIVERSIDAD TECNOLOGICA NACIONAL\n";
+	gotoxy(36, ++y);
+	cout << "   FACULTAD REGIONAL SANTA FE\n";
+	gotoxy(36, ++y);
+	system("pause");
+	system("cls");
+}
+
+void Menuabecedario(string &idioma){
+	string opcion;
+	bool aceptado= false;
+	while(aceptado==false){
+		separador1();
+		int y=1;
+		gotoxy(36,y);
+		cout<<"M E N U   A B E C E D A R I O"<<endl;
+		for(int i=1;i<99;i++){
+			gotoxy(i,2);
+			cout<<"=";
+		}
+		int x=1;
+		gotoxy(x,++y);
+		gotoxy(x,++y);
+		cout<<"1.- Español    ";
+		gotoxy(x,++y);
+		cout<<"2.- Ingles    ";
+		gotoxy(x,++y);
+		cout<<"3.- Italiano    ";
+		gotoxy(x,++y);
+		cout<<"4.- Portugues    ";
+		gotoxy(x,++y);
+		cout<<"5.- Frances    ";
+		gotoxy(x,++y);
+		cout<<"X.- Volver al menu principal ";
+		gotoxy(x,++y);
+		cout<<"Ingrese una opcion:     ";
+		
+		
+		cin>>opcion;
+		
+		if(opcion=="X" or opcion=="x"){
+			
+			system("cls");
+			Menu();
+			aceptado=true;
+		}else 
+		   if(opcion=="1"){
+			idioma="Español";
+			aceptado=true;
+		}else 
+			  if(opcion=="2"){
+			   idioma="Ingles";
+			   aceptado=true;
+		   }else 
+				 if(opcion=="3"){
+				  idioma="Italiano";
+				  aceptado=true;
+			  }else
+					if(opcion=="4"){
+					 idioma="Portugues";
+					 aceptado=true;
+				 }else
+					   if(opcion=="5"){
+						idioma="Frances";
+						aceptado=true;
+					}else system("cls");
+					   
+	}
+	system("cls");
+	separador1();
+	cout<<idioma<<endl;
+	cout<<endl;
+	Menu();
+}
+void Menu(){
+	system("color 07");
+	string menu;
+	string idioma;
+	bool aceptado=false;
+	int y=1;
+	separador1();
+	gotoxy(46,y);
+	cout<< "M E N U ";
+	int x=1;
+	for(int i=1;i<99;i++){
+		gotoxy(i,2);
+		cout<<"=";
+	}
+	gotoxy(x,++y);
+	gotoxy(x,++y);
+	cout<<"1.- Abecedario ";
+	gotoxy(x,++y);
+	cout<<"2.- Juegos ";
+	gotoxy(x,++y);
+	cout<<"X.- Salir de la aplicacion :c ";
+	gotoxy(x,++y);
+	cout<<"Seleccione una Opcion: ";
+	
+	while(aceptado==false){
+		cin>>menu;
+		
+		if(menu=="X" or menu=="x"){
+			int s;
+			system("cls");
+			gotoxy(1,1);
+			cout<<"Desea salir ?";
+			gotoxy(1,2);
+			cout<<" si(1) o No(0)  ";
+			cin>>s;
+			if(s==1){
+				system("cls");
+			}else {
+				system("cls");
+				Menu();
+			}
+			aceptado=true;
+		}else if(menu=="1"){
+			system("cls");
+			Menuabecedario(idioma);
+			aceptado=true;
+		}else if(menu=="2"){
+			system("cls");
+			MenuJuegos();
+			aceptado=true;
+		}else {
+			system("cls");
+			separador1();
+			int y=1;
+			gotoxy(46,y);
+			cout<< "M E N U ";
+			int x=1;
+			for(int i=1;i<99;i++){
+				gotoxy(i,2);
+				cout<<"=";
+			}
+			gotoxy(x,++y);
+			gotoxy(x,++y);
+			cout<<"1.- Abecedario ";
+			gotoxy(x,++y);
+			cout<<"2.- Juegos ";
+			gotoxy(x,++y);
+			cout<<"X.- Salir de la aplicacion :c ";
+			gotoxy(x,++y);
+			cout<<"Ingreso una opcion invalida, por favor vuelva a ingresar otra opcion: ";
+		}
+	}
+}
+						
+void MenuJuegos(){
+	system("color 07");
+	bool aceptado = false;
+	string opcion;
+	while(aceptado==false){
+		separador1();
+		int y=1;
+		gotoxy(40,y);
+		cout<<"M E N U   J U E G O S"<<endl;
+		int x=1;
+		for(int i=1;i<99;i++){
+			gotoxy(i,2);
+			cout<<"=";
+		}
+		gotoxy(x,++y);
+		gotoxy(x,++y);
+		cout<<"1.- Ahorcado    ";
+		gotoxy(x,++y);
+		cout<<"2.- Palabra cifrada    ";
+		gotoxy(x,++y);
+		cout<<"3.- Numero en otro idioma    ";
+		gotoxy(x,++y);
+		cout<<"4.- Memoria    ";
+		gotoxy(x,++y);
+		cout<<"X.- Volver al menu principal ";
+		gotoxy(x,++y);
+		gotoxy(x,++y);
+		cout<<"Ingrese una opcion:     ";
+		
+		cin>>opcion;
+		
+		if(opcion=="X" or opcion=="x"){
+			
+			system("cls");
+			Menu();
+			aceptado=true;
+		}else 
+		   if(opcion=="1"){
+			system("cls");
+			Ahorcado();
+			aceptado=true;
+		}else 
+			  if(opcion=="2"){
+			   system("cls");
+			   PalabraCifrada();
+			   aceptado=true;
+		   }else 
+				 if(opcion=="3"){
+				  system("cls");
+				  NumeroEnIdiomas();
+				  aceptado=true;
+			  }else
+					if(opcion=="4"){
+					 system("cls");
+					 Memorias();
+					 aceptado=true;
+				 }else system("cls");
+	}
+	
+	
+}
+void Ahorcado(){
+	// Palabra a adivinar
+	bool salir=false;
+	int x=1,y=1;
+	string palabraSecreta=palabrandom();
+	separador1();
+	gotoxy(1,1);
+	
+	// Limpiar la pantalla
+	system("cls"); // En Windows
+	separador1();
+	// Inicializar variables
+	string palabraAdivinada(palabraSecreta.length(), '_');
+	int intentosRestantes = 3;
+	string letrasUsadas;
+	
+	while (intentosRestantes > 0 and salir==false) {
+		x=1;
+		y=1;
+		if(intentosRestantes==3){
+			
+			gotoxy(x,++y);
+			cout<<"--------";
+			gotoxy(x,++y);
+			gotoxy(x,++y);
+			cout<<"|       |";
+			gotoxy(x,++y);
+			cout<<"        |";
+			gotoxy(x,++y);
+			cout<<"        |";
+			gotoxy(x,++y);
+			cout<<"        |";
+			gotoxy(x,++y);
+			cout<<"        |";
+			gotoxy(x,++y);
+			cout<<"     ___|___";
+		}else if(intentosRestantes==2){
+			gotoxy(x,++y);
+			cout<<" -------";
+			gotoxy(x,++y);
+			cout<<" |      |";
+			gotoxy(x,++y);
+			cout<<" O      |";
+			gotoxy(x,++y);
+			cout<<"/|      |";
+			gotoxy(x,++y);
+			cout<<"        |";
+			gotoxy(x,++y);
+			cout<<"        |";
+			gotoxy(x,++y);
+			cout<<"     ___|___";
+		}else if(intentosRestantes==1){
+			gotoxy(x,++y);
+			cout<<" -------";
+			gotoxy(x,++y);
+			cout<<" |      |";
+			gotoxy(x,++y);
+			cout<<" O      |";
+			gotoxy(x,++y);
+			cout<<"/|      |";
+			gotoxy(x,++y);
+			cout<<" |      |";
+			gotoxy(x,++y);
+			cout<<"        |";
+			gotoxy(x,++y);
+			cout<<"     ___|___";
+		}
+		gotoxy(x,++y);
+		// Mostrar la palabra adivinada
+		cout << "Palabra adivinada: ";
+		gotoxy(x,++y);
+		for (char letra : palabraAdivinada) {
+			gotoxy(++x,y);
+			cout << letra << " ";
+		}
+		x=1;
+		gotoxy(x,++y);
+		// Mostrar letras usadas
+		cout << "Letras usadas: ";
+		for (char letra : letrasUsadas) {
+			cout << letra << " ";
+		}
+		
+		gotoxy(x,++y);
+		
+		// Mostrar intentos restantes
+		cout << "Intentos restantes: " << intentosRestantes;
+		gotoxy(x,++y);
+		// Pedir al jugador que adivine una letra
+		char letra;
+		cout << "Adivina una letra: ";
+		cin >> letra;
+		
+		// Verificar si la letra ya se ha usado
+		if (find(letrasUsadas.begin(), letrasUsadas.end(), letra) != letrasUsadas.end()) {
+			cout << "Ya has usado esa letra. Intenta otra.";
+			gotoxy(x,++y);
+			
+		}
+		
+		letrasUsadas.push_back(letra);
+		
+		// Verificar si la letra está en la palabra secreta
+		bool letraEncontrada = false;
+		for (int i = 0; i < (palabraSecreta.length()); i++) {
+			if (palabraSecreta[i] == letra) {
+				palabraAdivinada[i] = letra;
+				letraEncontrada = true;
+			}
+		}
+		
+		if (!letraEncontrada) {
+			intentosRestantes--;
+			cout << "Incorrecto. Pierdes un intento.";
+			gotoxy(x,++y);
+		}
+		
+		// Verificar si el jugador ha adivinado toda la palabra
+		if (palabraAdivinada == palabraSecreta) {
+			separador1();
+			system("color 02");
+			gotoxy(1,1);
+			cout << "¡Felicidades! Has adivinado la palabra secreta: " << palabraSecreta;
+			gotoxy(x,++y);
+			cout<<"Enter para volver al Menu ";
+			gotoxy(x,++y);
+			system("pause");
+			system("cls");
+			MenuJuegos();
+			salir=true;
+		}
+		
+		
+		system("cls");
+		separador1();
+	}
+	
+	if (intentosRestantes == 0) {
+		x=1;
+		y=1;
+		gotoxy(x,++y);
+		system("color 04");
+		cout<<" -------";
+		gotoxy(x,++y);
+		cout<<" |      |";
+		gotoxy(x,++y);
+		cout<<" O      |";
+		gotoxy(x,++y);
+		cout<<" x      |";
+		gotoxy(x,++y);
+		cout<<"/|"<<char(92)<<"     |";
+		gotoxy(x,++y);
+		cout<<" |      |";
+		gotoxy(x,++y);
+		cout<<"/ "<<char(92)<<"   __|__";
+		gotoxy(x,++y);
+		cout << "Lo siento, has agotado todos tus intentos. La palabra secreta era: " << palabraSecreta;
+		gotoxy(x,++y);
+		cout<<"Enter para volver al Menu ";
+		gotoxy(x,++y);
+		system("pause");
+		system("cls");
+		MenuJuegos();
+		
+	}
+}	
+void PalabraCifrada(){
+	
+
+	cout << "Bienvenido al juego de adivinanza de palabras." << endl;
+	bool bandera=false;
+	string palabraSecreta;
+	cout << "Ingresa la palabra secreta: ";
+	cin >> palabraSecreta;
+	
+	system("cls");
+	
+	int offset = 14; 
+	string palabraCifrada = cifrarPalabra(palabraSecreta, offset);
+	int intentosRestantes = palabraSecreta.length() * 3;
+	
+	
+	while (intentosRestantes > 0 and bandera==false) {
+		cout << "La palabra cifrada es: " << palabraCifrada << endl;
+		cout << "Intentos restantes: " << intentosRestantes << endl;
+		cout << "Ingresa una letra: ";
+		
+		
+		char letra;
+		cin >> letra;
+		
+		if (palabraSecreta.find(letra) != string::npos) {
+			for (size_t i = 0; i < palabraSecreta.length(); ++i) {
+				if (palabraSecreta[i] == letra) {
+					palabraCifrada[i] = letra;
+				}
+			}
+			system("cls");
+			cout << "¡Correcto! La palabra actual es: " << palabraCifrada << endl;
+			
+			if (palabraCifrada == palabraSecreta) {
+				cout << "¡Felicidades! Has adivinado la palabra." << endl;
+				bandera=true;
+			}
+			
+		} else {
+			system("cls");
+			cout << "Incorrecto. Inténtalo de nuevo." << endl;
+			
+			intentosRestantes--;
+		}
+		
+	}
+	
+	if (intentosRestantes == 0) {
+		cout << "¡Agotaste tus intentos! La palabra era: " << palabraSecreta << endl;
+	}
+	
+	system("pause");
+	system("cls");
+	MenuJuegos();
+	
+}
+	
+string cifrarPalabra(const string& palabra, int offset) {
+	string cifrada = palabra;
+	for (int c=0;c < cifrada.length();c++) {
+		if (cifrada[c]) {
+			char base = (cifrada[c]) ? 'a' : 'A';
+			cifrada[c] = (cifrada[c] - base + offset) % 26 + base;
+		}
+	}
+	return cifrada;
+}
+
+void NumeroEnIdiomas(){
+	int n,idioma,aum;
+	int x=1,y=0;
+	separador1();
+	gotoxy(x,++y);
+	cout<<"Ingrese Numero del 1 al 9: ";
+	gotoxy(x,++y);
+	cin>>n;
+	gotoxy(x,++y);
+	cout<<"Ingrese Idioma 1 al  ";
+	gotoxy(x,++y);
+	cout<<"1- Español..";
+	gotoxy(x,++y);
+	cout<<"2- Ingles..";
+	gotoxy(x,++y);
+	cout<<"3- Italiano..";
+	gotoxy(x,++y);
+	cout<<"4- Frances..";
+	gotoxy(x,++y);
+	cout<<"5- Portugues..";
+	gotoxy(x,++y);
+	cin>>idioma;
+	gotoxy(x,++y);
+	cout<<"Ingresar los aumentos por segmento: ";
+	cin>>aum;
+	system("cls");
+	x=1;
+	y=1;
+	gotoxy(x,y);
+	NombreEnIdioma(n,idioma);
+	gotoxy(x,++y);
+	cout<<"Grafica:";
+	mostrardisplay(Segmentos(n),aum);
+	gotoxy(x,28);
+	system("pause");
+	system("cls");
+	MenuJuegos();
+	
+	
+	
+}
+
+
+string Segmentos(int n){
+	
+	
+	string display;
+	
+	if(n==0){
+		display="abcdef";
+	}else if(n==1){
+		display="bc";
+	}if(n==2){
+		display="abged";
+	}else if(n==3){
+		display="abgcd";
+	}else if(n==4){
+		display="bgfc";
+	}else if(n==5){
+		display="afgcd";
+	}else if(n==6){
+		display="afgcde";
+	}else if(n==7){
+		display="abc";
+	}else if(n==8){
+		display="abcdefg";
+	}else if(n==9){
+		display="abgfcd";
+	}
+	
+	return display;
+	
+}
+											
+											
+void NombreEnIdioma(int n,int idioma){
+	separador1();
+	string numero[tam]={"cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve",
+		"zero","one","two","three","four","five","six","seven", "eight","nine",
+		"zero","uno","due","tre","quattro","cinque","sei","sette","otto","nove",
+		"zéro","un","deux","trois","quatre","cinq","six","sept","huit","neuf"};
+	gotoxy(1,1);
+	if(idioma==1){
+		cout<<"En Español "<<n<<" es :";
+		cout<<numero[n];
+	}else if(idioma==2){
+		cout<<"En Ingles "<<n<<" es :";
+		cout<<numero[n+10];
+	}else if(idioma==3){
+		cout<<"En Italiano "<<n<<" es :";
+		cout<<numero[n+20];
+	}else if(idioma==4){
+		cout<<"En Frances "<<n<<" es :";
+		cout<<numero[n+(30)];
+	}
+	
+	
+}
+	
+void mostrardisplay(string display,int aum){
+	
+	char matriz[tam][tam]={};
+	
+	if(aum==1){
+		for(int i=0;i<display.length();i++){
+			
+			if(display[i]=='a'){
+				matriz[1][2]='-';
+				
+			}else if(display[i]=='b'){
+				
+				matriz[2][3]='|';
+				
+			}else if(display[i]=='c'){
+				
+				matriz[4][3]='|';
+				
+			}else if(display[i]=='d'){
+				
+				matriz[5][2]='-';
+				
+			}else if(display[i]=='e'){
+				
+				matriz[4][1]='|';
+				
+			}else if(display[i]=='f'){
+				
+				matriz[2][1]='|';
+				
+			}else if(display[i]=='g'){
+				
+				matriz[3][2]='-';
+				
+			}
+			
+		}
+	}else if(aum==2){
+		for(int i=0;i<display.length();i++){
+			
+			if(display[i]=='a'){
+				
+				matriz[1][2]='-';
+				matriz[1][3]='-';
+				
+				
+			}else if(display[i]=='b'){
+				
+				matriz[2][4]='|';
+				matriz[3][4]='|';
+				
+				
+			}else if(display[i]=='c'){
+				
+				matriz[5][4]='|';
+				matriz[6][4]='|';
+				
+				
+			}else if(display[i]=='d'){
+				
+				matriz[7][2]='-';
+				matriz[7][3]='-';
+				
+				
+				
+			}else if(display[i]=='e'){
+				
+				matriz[6][1]='|';
+				matriz[5][1]='|';
+				
+				
+			}else if(display[i]=='f'){
+				
+				matriz[2][1]='|';
+				matriz[3][1]='|';
+				
+				
+			}else if(display[i]=='g'){
+				
+				matriz[4][2]='-';
+				matriz[4][3]='-';
+				
+				
+			}
+		}		
+	}else if(aum==3){
+		for(int i=0;i<display.length();i++){
+			
+			if(display[i]=='a'){
+				
+				matriz[1][2]='-';
+				matriz[1][3]='-';
+				matriz[1][4]='-';
+				
+			}else if(display[i]=='b'){
+				
+				matriz[2][5]='|';
+				matriz[3][5]='|';
+				matriz[4][5]='|';
+				
+				
+			}else if(display[i]=='c'){
+				
+				matriz[6][5]='|';
+				matriz[7][5]='|';
+				matriz[8][5]='|';
+				
+				
+			}else if(display[i]=='d'){
+				
+				matriz[9][2]='-';
+				matriz[9][3]='-';
+				matriz[9][4]='-';
+				
+				
+				
+			}else if(display[i]=='e'){
+				
+				matriz[6][1]='|';
+				matriz[7][1]='|';
+				matriz[8][1]='|';
+				
+			}else if(display[i]=='f'){
+				
+				matriz[2][1]='|';
+				matriz[3][1]='|';
+				matriz[4][1]='|';
+				
+			}else if(display[i]=='g'){
+				
+				matriz[5][2]='-';
+				matriz[5][3]='-';
+				matriz[5][4]='-';
+				
+			}
+		}		
+	}else if(aum==4){
+		for(int i=0;i<display.length();i++){
+			
+			if(display[i]=='a'){
+				
+				matriz[1][2]='-';
+				matriz[1][3]='-';
+				matriz[1][4]='-';
+				matriz[1][5]='-';
+				
+			}else if(display[i]=='b'){
+				
+				matriz[2][6]='|';
+				matriz[3][6]='|';
+				matriz[4][6]='|';
+				matriz[5][6]='|';
+				
+			}else if(display[i]=='c'){
+				
+				matriz[7][6]='|';
+				matriz[8][6]='|';
+				matriz[9][6]='|';
+				matriz[10][6]='|';
+				
+			}else if(display[i]=='d'){
+				
+				matriz[11][2]='-';
+				matriz[11][3]='-';
+				matriz[11][4]='-';
+				matriz[11][5]='-';
+				
+				
+			}else if(display[i]=='e'){
+				
+				matriz[7][1]='|';
+				matriz[8][1]='|';
+				matriz[9][1]='|';
+				matriz[10][1]='|';
+				
+			}else if(display[i]=='f'){
+				
+				matriz[2][1]='|';
+				matriz[3][1]='|';
+				matriz[4][1]='|';
+				matriz[5][1]='|';
+				
+			}else if(display[i]=='g'){
+				
+				matriz[6][2]='-';
+				matriz[6][3]='-';
+				matriz[6][4]='-';
+				matriz[6][5]='-';
+				
+			}
+		}		
+	}
+	int x=1;
+	for(int i=3;i<15;i++){ //resto 3 porque arranco en 3 asi se me imprimen los numeros correctamente
+		for(int j=3;j<15;j++){
+			gotoxy(j,i);
+			cout<<matriz[i-3][j-3];
+		}
+		gotoxy(++x,i);
+	}
+	
+}
+
+	
+void Memorias(){
+	
+	string PalabrasTxs[tam]={
+		"adicion","angulo","aproximacion","area","aritmetica","arriba","axioma","base","binomio","bisectriz","calculo"
+			,"centro"
+			,"circulo"
+			,"coeficiente"
+			,"combinatoria"
+			,"congruencia"
+			,"constante"
+			,"coseno"
+			,"cuadrado"
+			,"cubico"
+			,"curva"
+			,"decimal"
+			,"denominador"
+			,"derivada"
+			,"diagonal"
+			,"diametro"
+			,"diferencia"
+			,"diferencial"
+			,"distancia"
+			,"distribucion"
+			,"dividendo"
+			,"division"
+			,"divisor"
+			,"ecuacion"
+			,"eje"
+			,"elemento"
+			,"entero"
+			,"equilatero"
+			,"esfera"
+			,"espacio"
+			,"exponente"
+			,"factor"
+			,"factorial"
+			,"factorizacion"
+			,"figura"
+			,"formula"
+			,"fraccion"
+			,"funcion"
+			,"geometria"
+			,"grado"
+			,"hipotenusa"
+			,"hipotesis"
+			,"horizontal"
+			,"igualdad"
+			,"imaginario"
+			,"inecuacion"
+			,"infinito"
+			,"integral"
+			,"interseccion"
+			,"inversa"
+			,"isosceles"
+			,"lado"
+			,"limite"
+			,"linea"
+			,"logaritmo"
+			,"matriz"
+			,"mayor"
+			,"mediana"
+			,"menor"
+			,"minimo","multiplo","numero","par","paralela","perimetro"
+			,"perpendicular","pi","poligono","potencia","producto","productoria","proporcion","raiz","rectangulo","segmento","seno","serie","simetria",
+			"suma","sumatoria","superficie","tabla","tangente","teorema","termino","triangulo","trigonometria","unidad","valor","variable","vertice","volumen"
+	};
+	
+	
+	
+	srand(time(NULL));
+	
+	string palabrasAleatorias[tam]={};
+	for(int i=0;i<5;i++){
+		palabrasAleatorias[i]=PalabrasTxs[rand()%101];
+	}
+	
+	
+	cout << "A continuación, se mostrarán 5 palabras durante 2 segundos:" << endl;
+	
+	// Mostrar palabras durante 2 segundos
+	for(int i=0;i<5;i++){
+		cout<<palabrasAleatorias[i]<<endl;
+	}
+	// Esperar 2 segundos (puedes ajustar el valor según tu preferencia)
+	Sleep(2000);
+	system("cls");
+	
+	
+	//Calcular resultados
+	char letraComun = letraMasRepetida(palabrasAleatorias);
+	int totalVocales = contarVocales(palabrasAleatorias);
+	string palabraLarga = palabraMasLarga(palabrasAleatorias);
+	
+	char a;
+	int b;
+	string c;
+	
+	cout<<"a. Identificar la letra que más se repite en esas palabras."<<endl;
+	cout<<"b. Adivinar cuántas vocales hay en total."<<endl;
+	cout<<"c. Adivinar la palabra de mayor longitud."<<endl;
+	
+	cout<<"a: ";
+	cin>>a;
+	cout<<"b: ";
+	cin>>b;
+	cout<<"c: ";
+	cin>>c;
+	
+	cout<<"Puntaje de Pregunta B: ";
+	cout<<PuntajeB(totalVocales,b)<<endl;
+	
+	
+	system("pause");
+	system("cls");
+	cout<<"Las respuestas son: "<<endl;
+	
+	cout << "a. La letra que más se repite es: " << letraComun << endl;
+	cout << "b. El total de vocales es: " << totalVocales << endl;
+	cout << "c. La palabra más larga es: " << palabraLarga << endl;
+	
+	system("pause");
+	system("cls");
+	MenuJuegos();
+	
+}
+	
+	
+	// Función para contar la letra que más se repite en las palabras
+char letraMasRepetida(string palabras[]) {
+	string todasLasPalabras ="";
+	for (int i=0;i<5;i++){
+		todasLasPalabras += palabras[i];
+	}
+	
+	int frecuencia[26] = {0};
+	for (int i=0;i<todasLasPalabras.length();i++) {
+		frecuencia[int(todasLasPalabras[i])- 'a']++;
+	}
+	
+	char letraMasComun = ' ';
+	int maxFrecuencia = 0;
+	for (int i = 0; i < 26; i++) {
+		if (frecuencia[i] > maxFrecuencia) {
+			maxFrecuencia = frecuencia[i];
+			letraMasComun = 'a' + i;
+		}
+	}
+	
+	return letraMasComun;
+}
+
+// Función para contar las vocales en las palabras
+int contarVocales(string palabras[]) {
+	int totalVocales = 0;
+	string todasLasPalabras ="";
+	
+	for (int i=0;i<5;i++) {
+		todasLasPalabras+=palabras[i];
+	}
+	for (int i=0;i<todasLasPalabras.length();i++) {
+		if(todasLasPalabras[i]=='a' or todasLasPalabras[i]=='e' or
+		   todasLasPalabras[i]=='i' or todasLasPalabras[i]=='o' or 
+		   todasLasPalabras[i]=='u'){
+			totalVocales++;
+		}
+	}
+	
+	return totalVocales;
+}
+	
+	// Función para encontrar la palabra de mayor longitud
+string palabraMasLarga(string palabras[]) {
+	string palabraMasLarga = "";
+	
+	for(int i=0;i<5;i++){
+		
+		if(palabras[i].length()>palabraMasLarga.length())	
+			palabraMasLarga=palabras[i];
+	}
+	
+	return palabraMasLarga;
+}
+
+int PuntajeB(int totalVocales,int b){
+	
+	if(((b*10)/totalVocales)>10){
+		return 0;
+	}else return ((b*10)/totalVocales);
+	
+}
+	
